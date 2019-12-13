@@ -4,7 +4,7 @@
 <!-- APPLICATION METADATA -->
 <property name="mdpc.name"    value="mdvl-dirstat"/>
 <property name="mdpc.section" value="utils"/>
-<property name="mdpc.descrs"  value="Tools to analyze filesystem chirarchies"/>
+<property name="mdpc.descrs"  value="Tools to analyze filesystem hierarchies"/>
 <property name="mdpc.arch"    value="all"/>
 <!-- recommends, because you can still use DirStat 1 without Postgres Lib -->
 <property name="mdpc.recommends" value="libpostgresql-jdbc-java"/>
