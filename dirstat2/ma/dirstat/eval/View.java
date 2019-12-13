@@ -1,16 +1,16 @@
 package ma.dirstat.eval;
 
-interface View {
+public interface View {
 
-	void setReferenceData(ViewReferenceData data);
+	public void setReferenceData(ViewReferenceData data);
 
-	void create();
+	public void create();
 
-	LoadingNode getLoading();
-	ViewNode getRoot();
-	void populateChildren(ViewNode parent);
+	public LoadingNode getLoading();
+	public ViewNode getRoot();
+	public void populateChildren(ViewNode parent);
 
-	PreparedFilter createFilter(ViewNode below);
-	PreparedFilter getPrevFilter();
+	public PreparedFilter createFilter(ViewNode below);
+	public PreparedFilter getPrevFilter();
 
 }
