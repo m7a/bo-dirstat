@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+	Ma_Sys.ma Dir Stat Configuration File, Copyright (c) 2011 Ma_Sys.ma.
+	For further info send an e-mail to Ma_Sys.ma@web.de
+-->
+
+<!DOCTYPE stats [
+<!ELEMENT stats (type, format+)>
+<!ATTLIST stats version CDATA #FIXED "1.0">
+<!ELEMENT type (type)*>
+<!ATTLIST type title CDATA #REQUIRED>
+<!ATTLIST type pattern CDATA #IMPLIED>
+<!ATTLIST type sort (category|extension|extension-regex|regex|name) "extension">
+<!ATTLIST type emr (true|false) "false">
+<!ATTLIST type stats (end|big|small|sub) "sub">
+<!ELEMENT format (format)*>
+<!ATTLIST format title CDATA #IMPLIED>
+<!ATTLIST format data CDATA #IMPLIED>
+<!ATTLIST format value (title|hidden|executable|unreadable|readonly|unreadable-dirs|zero-byte|non-files|folders|files-between|max-depth|biggest-folder-size|biggest-folder-files|biggest-file|doubles|size|files|time|link-traps|avg-files-per-dir|avg-file-size|avg-speed-files-per-second|avg-speed-MiB-per-second) "title">
+<!ATTLIST format describes (end|big|small|sub) "sub">
+]>
+
+<stats>
+	<type title="all" stats="end" sort="category">
+		<type title="Dokumente" sort="category">
+			<type title="Professionellere Dokumente" sort="category">
+				<type title="Portable Document Format" pattern="pdf" />
+				<type title="Post Script" pattern="ps" />
+				<type title="TeX" sort="category">
+					<type title="LaTeX Ausgabeformat" pattern="dvi" />
+					<type title="TeX (oft LaTeX)" pattern="tex" />
+					<type title="BibTeX Literaturverzeichnis" pattern="bib" />
+				</type>
+			</type>
+			<type title="Microsoft Office" sort="category">
+				<type title="Text" pattern="doc" />
+				<type title="Tabelle" pattern="xls" />
+			</type>
+			<type title="Open Office Dateien" sort="category">
+				<type title="Start Office Dateien" sort="category">
+					<type title="Zeichnung" pattern="sxd" />
+					<type title="Tabelle" pattern="sxc" />
+				</type>
+				<type title="Text" pattern="odt" />
+				<type title="Tabelle" pattern="ods" />
+				<type title="Grafik" pattern="odg" />
+				<type title="Präsentation" pattern="odp" />
+			</type>
+			<type title="Textdateien" sort="category">
+				<type title="Checksummenliste" pattern="md5" />
+				<type title="Aufzeichnungen (oft generiert)" pattern="log" />
+				<type title="Comma Separated Value (Tabelle)" pattern="csv" />
+				<type title="Nicht näher definierte Textdatei" pattern="txt|scp|wtx" sort="extension-regex" />
+			</type>
+			<type title="Zertifikate/Signaturen" sort="category">
+				<type title="Signatur/Katalog" pattern="cat" />
+				<type title="Sicherheitszertifikat" pattern="cer|crt|dfb" sort="extension-regex" />
+				<type title="Zertifikatssperrliste" pattern="crl" />
+				<type title="Zertifikatsanforderung" pattern="p10" />
+				<type title="Privater Informationsaustausch" pattern="p12|pfx" sort="extension-regex" />
+				<type title="Digitale ID Datei" pattern="p7c" />
+				<type title="PKCS #7 Zertifikat" pattern="p7[rb]|spc" sort="extension-regex" />
+				<type title="PKCS #7 Signatur" pattern="p7s" />
+			</type>
+		</type>
+		<type title="Medien" sort="category">
+			<type title="Bild" sort="category">
+				<type title="Bitmap"  sort="category">
+					<type title="Portable Network Graphics" pattern="png" />
+					<type title="Graphics Interchange Format" pattern="gif" />
+					<type title="Windows Bitmap" pattern="bmp|dib" sort="extension-regex" />
+					<type title="Windows Icon" pattern="ico" />
+					<type title="Truevision TGA" pattern="tga" />
+					<type title="TIFF" pattern="tif(f)?" sort="extension-regex" />
+					<type title="JPEG" pattern="(jp[eg]g?)|jfif" sort="extension-regex" />
+					<type title="EMF" pattern="emf" />
+					<type title="WMF" pattern="wmf" />
+				</type>
+				<type title="Vektorgrafik" sort="category">
+					<type title="3D Objekt" pattern="obj" />
+					<type title="Scalable Vector Graphics" pattern="svg" />
+				</type>
+			</type>
+			<type title="Audio" sort="category">
+				<type title="Wave" pattern="wav" />
+				<type title="Windows Media Audio" pattern="wma" />
+				<type title="MP3" pattern="mp3" />
+				<type title="AIFF" pattern="aif[cf]?" sort="extension-regex" />
+				<type title="AU" pattern="au|snd" sort="extension-regex" />
+				<type title="CD Audiospur" pattern="cda" />
+				<type title="Midi Sequenz" pattern="(mid(i)?)|rmi" sort="extension-regex" />
+			</type>
+			<type title="Video" sort="category">
+				<type title="Shockwave Flash Object" pattern="swf|spl" sort="extension-regex" />
+				<type title="Flash Viedo" pattern="flv" />
+				<type title="AVI" pattern="avi" />
+				<type title="WMV" pattern="wmv" />
+				<type title="M1V" pattern="m1v" />
+				<type title="MP2" pattern="mp2(v)?" sort="extension-regex" />
+				<type title="MPA" pattern="mpa" />
+				<type title="MPE" pattern="mpe" />
+				<type title="MPV2" pattern="mpv2" />
+				<type title="MPEG" pattern="mp(e)?g" sort="extension-regex" />
+			</type>
+			<type title="Descent 3" sort="category">
+				<type title="Raum" pattern="orf" />
+				<type title="Levelpackage" pattern="mn3" />
+				<type title="Level" pattern="d3l" />
+				<type title="Gam Table" pattern="gam" />
+				<type title="Textur" pattern="ogf" />
+				<type title="Animierte Textur" pattern="oaf" />
+			</type>
+			<type title="Windows" sort="category">
+				<type title="ASF Mediendatei" pattern="asf" />
+				<type title="WM Mediendatei" pattern="wm" />
+				<type title="Wiedergabeliste" pattern="asx" />
+				<type title="Animierter Cursor" pattern="ani" />
+				<type title="Cursor" pattern="cur" />
+			</type>
+			<type title="Schriftart" sort="category">
+				<type title="True Type Font" pattern="ttf" />
+				<type title="Open Type Font" pattern="otf" />
+				<type title="Type 1 Schriftart" pattern="pfm" />
+				<type title="Font" pattern="fon" />
+			</type>
+		</type>
+		<type title="Programme"  sort="category">
+			<type title="Java"  sort="category">
+				<type title="Quellcode" pattern="java" />
+				<type title="Klasse" pattern="class" />
+				<type title="Archiv" pattern="jar" />
+				<type title="Alte Lejos NXJ Binary" pattern="nxj" />
+				<type title="Manifest" pattern="mf" />
+			</type>
+			<type title="C/C++"  sort="category">
+				<type title="C Quelltext" pattern="c" />
+				<type title="C++ Quelltext" pattern="cpp" />
+				<type title="Header" pattern="h" />
+			</type>
+			<type title="Windows" pattern="exe" />
+			<type title="Windows Active X Steuerelement" pattern="ocx" />
+			<type title="MS DOS" pattern="com" /> 
+			<type title="Generierte Binärdateien" sort="category">
+				<type title="Unbekannte Binärdatei" pattern="bin" />
+				<type title="Temporäre Datei" sort="category">
+					<type title="TMP" pattern="t(e)?mp" sort="extension-regex" />
+					<type title="Hilfedatei für programminternen Gebrauch" pattern="aux" />
+					<type title="Sperre" pattern="lock" />
+					<type title="Zwischenspeicher" pattern="swp" />
+				</type>
+				<type title="Nicht näher bekannte Ausgabe" pattern="out" />
+			</type>
+			<type title="Bibliothek" pattern="lib" />
+		</type>
+		<type title="Script" sort="category">
+			<type title="Windows" sort="category">
+				<type title="Batch" pattern="bat" />
+				<type title="Batch mit neueren Befehlen" pattern="cmd" />
+				<type title="Quick Basic" pattern="qb" />
+				<type title="VBScript" pattern="vb[es]" sort="extension-regex" />
+				<type title="Windows Script File" pattern="wsf" />
+				<type title="Auto IT V3 Script" pattern="au3" />
+				<type title="Logon Command" pattern="logon.command" sort="name" emr="true" />
+			</type>
+			<type title="Linux" sort="category">
+				<type title="Setup" pattern="run" />
+				<type title="Shellscript" pattern="sh" />
+				<type title="AWK Script" pattern="awk" />
+				<type title="SED Script" pattern="sed" />
+			</type>
+			<type title="Python" sort="category">
+				<type title="Script" pattern="py" />
+				<type title="Binary" pattern="pyc" />
+				<type title="Objekt" pattern="pyo" />
+			</type>
+			<type title="Einzubindende Datei (Include)" pattern="inc" />
+		</type>
+		<type title="Webseite"  sort="category">
+			<type title="Markup" sort="category">
+				<type title="HTML" pattern="(s)?htm(l)?" sort="extension-regex" />
+				<type title="XHTML" pattern="xht(ml)?" sort="extension-regex" />
+				<type title="XML" pattern="xml" />
+				<type title="Windows HTML Application" pattern="hta" />
+			</type>
+			<type title="Stylesheet" stats="sub" sort="category">
+				<type title="Cascading Style Sheet" pattern="css" />
+				<type title="Extensilbe Stylesheet Language" pattern="xsl" />
+			</type>
+			<type title="Script" sort="category" >
+				<type title="Java Script" pattern="js" />
+				<type title="PHP Hypertext Processor" pattern="php" />
+				<type title="CGI" pattern="cgi" />
+				<type title="Template (Vorlage)" pattern="tpl" />
+			</type>
+			<type title="Javascript Object Notation" pattern="json" />
+			<type title="Document Type Definition" pattern="dtd" />
+			<type title="HT" sort="category">
+				<type title="HT Access" pattern="htaccess" />
+				<type title="HT Password" pattern="htpasswd" />
+			</type>
+		</type>
+		<type title="Einstellung" sort="category">
+			<type title="Zuordnung" sort="category">
+				<type title="Microsoft INI" pattern="ini" />
+				<type title="Microsoft Treiber/CD Information" pattern="inf" />
+				<type title="Java" pattern="properties" />
+				<type title="Preferences" pattern="prefs" />
+				<type title="Linux" pattern="conf" />
+				<type title="Einstellung in Linux Art" pattern="config" />
+			</type>
+			<type title="Microsoft" sort="category">
+				<type title="IExpress" pattern="SED" emr="true" />
+				<type title="Management Console" pattern="msc" />
+				<type title="Systemmonitordatei" pattern="blg" />
+				<type title="Movie Maker Projekt" pattern="mswmm" />
+			</type>
+			<type title="Serialisiertes Objekt" pattern="dat|ser" sort="extension-regex" />
+			<type title="(oft CD) Inhaltsverzeichnis" pattern="toc" />
+			<type title="Datenbank" pattern="db" />
+			<type title="SQL Datenbankcode" pattern="sql" />
+			<type title="History" pattern="history" />
+			<type title="(Eclipse) Projektinformationen" pattern="project" />
+			<type title="STNE Kolonieplaner Datei" pattern="kpl(s)?" sort="extension-regex" />
+			<type title="Farbprofil" pattern="ic[cm]" sort="extension-regex" />
+		</type>
+		<type title="Archiv"  sort="category">
+			<type title="TAR" pattern="tar" />
+			<type title="Gnu Zip" pattern="gz" />
+			<type title="Tar + Gnu Zip" pattern="tgz" />
+			<type title="Zip" pattern="zip" />
+			<type title="RAR" pattern="rar" />
+			<type title="BZip 2" pattern="bz2" />
+			<type title="7-Zip" pattern="7z" />
+			<type title="Z" pattern="Z" emr="true" />
+			<type title="AES verschlüsselte Datei" pattern="aes" />
+			<type title="Windows" sort="category">
+				<type title="(Kompilierte) Hilfedatei" pattern="chm" />
+				<type title="Hilfedatei" pattern="hlp" />
+				<type title="Windows Installer Paket" pattern="msi" />
+				<type title="Windows Installer Patch" pattern="msp" />
+			</type>
+			<type title="Image" sort="category">
+				<type title="Image eines optischen Datenträgers" pattern="iso" />
+				<type title="Diskettenimage" pattern="img" />
+				<type title="GameBoy Advance Spiel Image" pattern="gba" />
+				<type title="GameBoy Spiel Image" pattern="gb" />
+				<type title="VM Image" sort="category">
+					<type title="Virtualbox" pattern="vdi" />
+				</type>
+			</type>
+			<type title="Vorlage für selbstentpackendes Archiv" pattern="sfx" />
+		</type>
+		<type title="Linkdatei" sort="category">
+			<type title="Windows" pattern="lnk" />
+			<type title="Windows Webseitenlink" pattern="url" />
+			<type title="MS-Dos" pattern="pif" />
+		</type>
+		<type title="Systemdatei"  sort="category">
+			<type title="Linux" stats="sub" sort="category">
+				<type title="Gerätedatei" sort="category">
+					<type title="Blockorientiertes Linux Gerät" pattern="sd[a-z][1-9]?" emr="true" sort="regex" />
+					<type title="Terminal" pattern="tty[1-9]+" sort="regex" emr="true" />
+				</type>
+			</type>
+			<type title="Windows"  sort="category">
+				<type title="CHKDSK Wiederhergestellte Dateifragmente" pattern="chk" />
+				<type title="Dynamic Link Library (Programmbibliothek)" pattern="dll" />
+				<type title="Systemdatei: Treiber, MSDOS" pattern="sys" />
+				<type title="Registry Export" pattern="reg" />
+				<type title="Aktivierungsdaten" pattern="wpa.dbl" sort="name" />
+				<type title="Virtueller Gerätetreiber" pattern="386|vxd" sort="extension-regex" />
+				<type title="Treiber" pattern="drv" />
+				<type title="Sicherungsdatei" pattern="bkf" />
+				<type title="Systemsteuerungsoption" pattern="cpl" />
+				<type title="Password Backup" pattern="psw" />
+			</type>
+		</type>
+		<type title="Sicherungen"  sort="category">
+			<type title="Alte Dateien" pattern="old" />
+			<type title="Sicherungsdatei" pattern="(.*~)|bak|(.*_)" sort="extension-regex" />
+			<type title="Gespeicherte Programmdaten" pattern="sa[v12345]?" sort="extension-regex" />
+		</type>
+	</type>
+	<format describes="sub">
+		<format title="Dateien"  value="files" />
+		<format title="Größe"    value="size" />
+		<format title="Leer"     value="zero-byte" />
+		<format title="Unlesbar" value="unreadable" />
+		<format title="Doppelt"  value="doubles" />
+		<format title="Größte"   value="biggest-file">
+			<format title="list" />
+		</format>
+	</format>
+	<format describes="big">
+		<format title="Dateien"  value="files" />
+		<format title="Größe"    value="size" />
+		<format title="Leer"     value="zero-byte" />
+		<format title="Unlesbar" value="unreadable" />
+		<format title="Doppelt"  value="doubles" />
+		<format title="Größte"   value="biggest-file" />
+	</format>
+	<format describes="end">
+		<!-- unreadable-dirs|files-between|biggest-folder-size|biggest-folder-files|
+			doubles|time|avg-files-per-dir|avg-file-size|avg-speed-files-per-second|
+			avg-speed-MiB-per-second) -->
+		<format title="Dateien"          value="files" />
+		<format title="Ordner"           value="folders" />
+		<format title="Größe"            value="size" />
+		<format title="Versteckt"        value="hidden" />
+		<format title="Auführbar"        value="executable" />
+		<format title="Unlesbar"         value="unreadable" />
+		<format title="Schreibgeschützt" value="readonly" />
+		<format title="Größte Datei" value="biggest-file" />
+		<format title="Linkfallen" value="link-traps">
+			<format title="list" />
+		</format>
+		<format title="Maximale Ordnertiefe" value="max-depth">
+			<format title="list" />
+		</format>
+		<format title="Weder Dateien noch Ordner" value="non-files">
+			<format title="list" />
+		</format>
+		<format title="Leere Dateien" value="zero-byte">
+			<format title="list" />
+		</format>
+		<!--<format title="Doppelte Dateien" value="doubles">
+			<format title="list" />
+		</format>-->
+		<format title="Benötigte Zeit" value="time" />
+	</format>
+</stats>

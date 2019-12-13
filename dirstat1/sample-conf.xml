@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!--
+        Ma_Sys.ma Dir Stat Configuration File, Copyright (c) 2011 Ma_Sys.ma.
+        For further info send an e-mail to Ma_Sys.ma@web.de
+-->
+
+<!DOCTYPE stats [
+<!ELEMENT stats (type, format+)>
+<!ATTLIST stats version CDATA #FIXED "1.0">
+<!ELEMENT type (type)*>
+<!ATTLIST type title CDATA #REQUIRED>
+<!ATTLIST type pattern CDATA #IMPLIED>
+<!ATTLIST type sort (category|extension|extension-regex|regex|name) "extension">
+<!ATTLIST type emr (true|false) "false">
+<!ATTLIST type stats (end|big|small|sub) "sub">
+<!ELEMENT format (format)*>
+<!ATTLIST format title CDATA #IMPLIED>
+<!ATTLIST format data CDATA #IMPLIED>
+<!ATTLIST format value (title|hidden|executable|unreadable|readonly|unreadable-dirs|zero-byte|non-files|folders|files-between|max-depth|biggest-folder-size|biggest-folder-files|biggest-file|doubles|size|files|time|link-traps|avg-files-per-dir|avg-file-size|avg-speed-files-per-second|avg-speed-MiB-per-second) "title">
+<!ATTLIST format describes (end|big|small|sub) "sub">
+]>
+
+<stats>
+        <type title="all" stats="end" sort="category">
+                <type title="Windows Programm" pattern="exe" />
+        </type>
+	<format describes="big">
+		<format title="Dateien" value="files" />
+	</format>
+        <format describes="sub">
+                <format title="Dateien" value="files" />
+                <format title="Größe"   value="size" />
+                <format title="Leer"    value="zero-byte" />
+        </format>
+        <format describes="end">
+                <format title="Dateien"          value="files" />
+                <format title="Ordner"           value="folders" />
+                <format title="Größe"            value="size" />
+                <format title="Versteckt"        value="hidden" />
+                <format title="Auführbar"        value="executable" />
+                <format title="Unlesbar"         value="unreadable" />
+                <format title="Schreibgeschützt" value="readonly" />
+                <format title="Größte Datei"     value="biggest-file" />
+                <format title="Leere Dateien"    value="zero-byte" />
+        </format>
+</stats>

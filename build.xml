@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="build">
+
+<!-- APPLICATION METADATA -->
+<property name="mdpc.name"    value="mdvl-dirstat"/>
+<property name="mdpc.section" value="utils"/>
+<property name="mdpc.descrs"  value="Tool to analyze filesystem chirarchies"/>
+<property name="mdpc.arch"    value="all"/>
+<!-- recommends, because you can still use DirStat 1 without Postgres Lib -->
+<property name="mdpc.recommends" value="libpostgresql-jdbc-java"/>
+<property name="mdpc.descrl">
+ DirStat 2 allows the state of a filesystem hierarchy to be recorded in a
+ PostgreSQL database and includes a GUI to connect to this database in order
+ to perform analyses in terms of file types and file sizes.
+ .
+ This package includes DirStat 1 which provides a subset of the functionality
+ (a fixed analysis) in a less stable but still useful commandline application
+ without the need to acquire data into a database first.
+</property>
+
+<property name="mdpc.file.install">
+...
+</property>
+
+<property name="mdpc.copyright.file"><![CDATA[
+License: GPL-3+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+License-Reference: /usr/share/common-licenses/GPL-3
+
+License: CDDL
+ The contents of this file are subject to the terms of the Common Development
+ and Distribution License (the License). You may not use this file except in
+ compliance with the License.
+ .
+ You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+ or http://www.netbeans.org/cddl.txt.
+ .
+ When distributing Covered Code, include this CDDL Header Notice in each file
+ and include the License file at http://www.netbeans.org/cddl.txt.
+ .
+ If applicable, add the following below the CDDL Header, with the fields
+ enclosed by brackets [] replaced by your own identifying information:
+ "Portions Copyrighted [year] [name of copyright owner]"
+ .
+ The Original Software is NetBeans. The Initial Developer of the Original
+ Software is Sun Microsystems, Inc. Portions Copyright 1997-2006 Sun
+ Microsystems, Inc. All Rights Reserved.
+ Permission to use, copy, modify, and/or distribute this software for any
+ purpose with or without fee is hereby granted, provided that the above
+ copyright notice and this permission notice appear in all copies.
+
+Files: dirstat1/* dirstat2_dev/* dirstat2/ma dirstat2/drop.sql dirstat2/build.xml README.md build.xml
+Copyright: Copyright (c) 2019 Ma_Sys.ma <Ma_Sys.ma@web.de>
+License: GPL-3+
+
+Files: dirstat2/lib/org-netbeans-swing-outline.jar
+License: CDDL
+]]></property>
+
+<!-- PART OF TPL HERE FOR USE IN BUILD -->
+<property environment="env"/>
+<condition property="masysma.internal.includepath.rel" value="${env.MDVL_CI_PHOENIX_ROOT}" else=".."><isset property="env.MDVL_CI_PHOENIX_ROOT"/></condition>
+<property name="masysma.internal.includepath" location="${masysma.internal.includepath.rel}"/>
+
+<!-- SPECIFIC BUILD TODO THIS IS RECURSIVE ANT SHOULD BE SUPPORTED IN TEMPLATE! -->
+<target name="build">
+	<ant dir="dirstat1" target="jar"/>
+	<ant dir="dirstat2" target="jar"/>
+</target>
+
+<target name="clean">
+	<ant dir="dirstat1" target="clean"/>
+	<ant dir="dirstat2" target="clean"/>
+</target>
+
+<target name="dist-clean" depends="clean">
+	<ant dir="dirstat1" target="dist-clean"/>
+	<ant dir="dirstat2" target="dist-clean"/>
+</target>
+
+<!-- CI INTEGRATION -->
+<target name="package_triggered" depends="package">
+	<property name="masysma.ci.trigger" value="newver"/>
+</target>
+
+<!-- TPL IMPORT (PARTIALLY GIVEN ABOVE) -->
+<property name="masysma.internal.loadpath" value="${masysma.internal.includepath}/co-build/ant-build-template.xml"/>
+<condition property="masysma.internal.load" value="file://${masysma.internal.loadpath}" else="https://raw.githubusercontent.com/m7a/co-build/master/ant-build-template.xml"><resourceexists><file file="${masysma.internal.loadpath}"/></resourceexists></condition>
+<import><url url="${masysma.internal.load}"/></import>
+
+</project>

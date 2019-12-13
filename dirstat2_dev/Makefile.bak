@@ -1,0 +1,9 @@
+LANG = java
+TARGET = dirstat2.jar
+RES = ma
+XRES = org
+MAIN = ma.dirstat.Main
+SECTION = 33
+
+include /usr/share/mdvl/make.mk
+include /data/main/man/web/external/inc.mk

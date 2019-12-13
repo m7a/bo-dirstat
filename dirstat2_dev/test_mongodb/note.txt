@@ -1,0 +1,261 @@
+----------------------------------------------------------------------[ Meta ]--
+
+name		dirstat/dev
+section		39
+description	DirStat 2 development notes
+tags		test note
+encoding	utf8
+compliance	prerelease
+lang		en
+creation	2013
+copyright	Copyright (c) 2013, 2014 Ma_Sys.ma.
+		For further info send an e-mail to Ma_Sys.ma@web.de
+
+---------------------------------------------------------------------[ Notes ]--
+
+WARNING
+	Background-Queriying capability is not implemented jet. Do it!
+
+-----------------------------------------------------[ Query file extensions ]--
+
+`load("/path/to/x.js");` includes the file.
+
+Map-Reduce 282320ms
+	db.runCommand({
+		mapReduce: "rootwork1",
+		map: function() {
+			emit({ ext: this.ext }, { count: 1 });
+		},
+		reduce: function(key, values) {
+			var sum = 0;
+			for(var i = 0; i < values.length; i++)
+				sum += values[i].count;
+			return { count: sum };
+		},
+		out: { inline : 1}
+	});
+Map-Reduce special view 19328ms
+	db.runCommand({
+		mapReduce: "rootwork1",
+		map: function() {
+			emit({ ext: this.ext }, { count: 1 });
+		},
+		reduce: function(key, values) {
+			var sum = 0;
+			for(var i = 0; i < values.length; i++)
+				sum += values[i].count;
+			return { count: sum };
+		},
+		out: "rootwork1.by_extension"
+	});
+Aggregation 725ms
+	db.rootwork1.aggregate([
+		{ $group: { _id: "$ext", total: { $sum: 1 } } }
+	]);
+Aggregation II 861ms
+	db.rootwork1.aggregate([
+		{ $match: { ext: { $exists: true } } },
+		{ $group: { _id: "$ext", total: { $sum: 1 } } }
+	]);
+Aggregation III 948ms
+	db.rootwork1.aggregate([
+		{ $match: { ext: { $exists: true } } },
+		{ $group: { _id: "$ext", total: { $sum: 1 } } },
+		{ $match: { total: { $gt: 4000 } } },
+		{ $sort: { total: 1 } }
+	]).result;
+Aggregation IV
+	db.rootwork1.aggregate([
+		{ $match: { _id: /^\/data/ } },
+		{ $match: { ext: { $exists: true } } },
+		{ $group: { _id: "$ext", total: { $sum: 1 } } },
+		{ $match: { total: { $gt: 50 } } },
+		{ $sort: { total: 1 } }
+	]); // 1216ms
+	db.rootwork1.aggregate([
+		{ $match: { _id: /^\/data/ } },
+		{ $match: { ext: { $exists: true } } },
+		{ $group: {
+			_id: "$ext",
+			total: { $sum: 1 },
+			size: { $sum: "$size" }
+		} },
+		{ $sort: { size: 1 } }
+	]).result; // 1215ms
+
+=> For DirStat2 we will want to combine a specialized ``view'' on the data with
+   the aggregation queries.
+
+---------------------------------------------------[ Tests for filetype view ]--
+
+db.linux1.aggregate([
+	{ $match: { ext: { $exists: true } } },
+	{ $group: {
+		_id: "$ext",
+		total: { $sum: 1 },
+		size: { $sum: "$size" }
+	} }
+]);
+
+db.linux1.aggregate([
+	{ $match: { ext: { $exists: true } } },
+	{ $group: {
+		_id: "$ext",
+		total: { $sum: 1 },
+		size: { $sum: "$size" },
+		largest: { $max: "$size" },
+	} }
+]);
+
+printjson(db.linux1.aggregate([
+	{ $match: { ext: { $exists: true } } },
+	{ $group: {
+		_id:     { ext:  "$ext", name: "$_id" },
+		size:    { $sum: "$size" },
+		total:   { $sum: 1 },
+	} },
+	{ $sort: { size: 1 } },
+	{ $group: {
+		_id:         "$_id.ext",
+		total:       { $sum:  "$total" },
+		size:        { $sum:  "$size" },
+		largest:     { $last: "$_id.name" },
+		largestSize: { $last: "$size" },
+	} }
+])); // Costs about 3084 ms
+
+printjson(db.linux1.aggregate([
+	{ $match: { ext: { $exists: true } } },
+	{ $sort: { size: 1 } },
+	{ $group: {
+		_id:         "$ext",
+		total:       { $sum:  1 },
+		size:        { $sum:  "$size" },
+		largest:     { $last: "$_id" },
+		largestSize: { $last: "$size" },
+	} }
+])); // Costs about 1800 ms
+
+printjson(db.linux3.aggregate([
+	{ $match: { _id: { $ne: "DIRSTAT_META" } } },
+	{ $sort: { size: 1 } },
+	{ $group: {
+		_id: { $ifNull: [ "$ext", "NO_EXTENSION" ] },
+		files:         { $sum:  1 },
+		size:          { $sum: "$size" },
+		errors: { $sum: { $cond: [
+			{ $eq: [
+				{ $ifNull: [ "$error", "no_error" ] },
+				"no_error"
+			] },
+			0,
+			1
+		] } },
+		empty: { $sum: { $cond: [ { $eq: [ "$size", 0 ] }, 1, 0, ] } },
+		biggest_path:  { $last: "$_id" },
+		biggest_bytes: { $last: "$size" },
+	} },
+	{ $sort: { _id: 1 } },
+	{ $project: {
+		pattern: { $cond: [
+			{ $eq: [ "$_id", "NO_EXTENSION" ] },
+			"*",
+			{ $concat: [ "*.", "$_id" ] }
+		] },
+		files: "$files",
+		size_in_kib: { $divide: [ "$size", 1024 ] },
+		errors: "$errors",
+		empty: "$empty",
+		biggest_path: "$biggest_path",
+		biggest_bytes: "$biggest_bytes"
+	} },
+])); // Costs about 3000 ms (SEL)
+
+-----------------------------------------------[ Query after directory depth ]--
+
+db.linux2.find({ depth: 1 }, { "_id": 1 }).forEach(printjson);
+
+// DOES NOT WORK YET
+db.linux2.find({ depth: 0 }, { "_id": 1 }).forEach(function(doc) {
+	var n = doc._id.length;
+	var docid = doc._id;
+	var query = "printjson(db.linux2.aggregate([" + 
+		"{ $project: { tmp: { $substr [ \"$_id\", 0, " + n +
+								" ] } } }," +
+		"{ $match: { tmp: \"" + docid +
+					"\", ext: { $exists: true } } }," +
+		"{ $sort: { size: 1 } }," +
+		"{ $group: {" +
+			"_id:         \"$ext\"," +
+			"total:       { $sum:  1 }," +
+			"size:        { $sum:  \"$size\" }," +
+			"largest:     { $last: \"$_id\" }," +
+			"largestSize: { $last: \"$size\" }," +
+		"} }" +
+	"]));";
+	// print(query);
+	eval(query);
+});
+
+db.linux2.aggregate([
+	{ $project: { tmp: { $substr: [ "$_id", 0, n ....
+
+// TODO DOES NOT WORK YET?
+db.linux2.find({ depth: 0 }, { "_id": 1 }).forEach(function(doc) {
+	var n = doc._id.length;
+	var docid = doc._id;
+	var query = "printjson(db.linux2.aggregate([" + 
+		"{ $project: { tmp: { $substr: [ \"$_id\", 0, " + n +
+								" ] } } }," +
+		"{ $match: { tmp: \"" + docid +
+					"\", ext: { $exists: true } } }," +
+		"{ $sort: { size: 1 } }," +
+		"{ $group: {" +
+			"_id:         \"$ext\"," +
+			"total:       { $sum:  1 }," +
+			"size:        { $sum:  \"$size\" }," +
+			"largest:     { $last: \"$_id\" }," +
+			"largestSize: { $last: \"$size\" }," +
+		"} }" +
+	"]));";
+	//print(query);
+	eval(query);
+});
+
+// Funktioniert zwar, ist aber so langsam, dass es sich nicht lohnt das in der
+// DB auszuführen. Statt dessen sollte man lieber in Java alle Roots abfragen
+// und die GUI im Hintergrund aktulisieren.
+printjson(db.linux2.find({ depth: 0 }, { "_id": 1 }).map(function(doc) {
+	var n = doc._id.length;
+	var docid = doc._id;
+	var query = "db.linux2.aggregate([" + 
+		"{ $project: { " +
+			"_id: \"$_id\", " +
+			"tmp: { $substr: [ \"$_id\", 0, " + n + " ] }, " +
+			"ext: \"$ext\", " +
+			"size: \"$size\", " +
+		"} }," +
+		// match u.U. vorher...
+		"{ $match: { tmp: \"" + docid +
+					"\", ext: { $exists: true } } }," +
+		"{ $sort: { size: 1 } }," +
+		"{ $group: {" +
+			"_id:         \"$ext\"," +
+			"total:       { $sum:  1 }," +
+			"size:        { $sum:  \"$size\" }," +
+			"largest:     { $last: \"$_id\" }," +
+			"largestSize: { $last: \"$size\" }," +
+		"} }," +
+		"{ $limit: 20 }" +
+	"]);";
+	return { dir: docid, stat: eval(query).result };
+}));
+
+Neuer DB Eintrag: "DIRSTAT_META" ermöglicht es, die Startverzeichnisse getrennt
+zu behandeln etc.
+
+---------------------------------------------------------------------[ Setup ]--
+
+$ createuser -DRS linux-fan
+ALTER ROLE "linux-fan" WITH PASSWORD 'testwort';
+CREATE DATABASE masysma_dirstat
