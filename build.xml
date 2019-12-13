@@ -4,7 +4,7 @@
 <!-- APPLICATION METADATA -->
 <property name="mdpc.name"    value="mdvl-dirstat"/>
 <property name="mdpc.section" value="utils"/>
-<property name="mdpc.descrs"  value="Tool to analyze filesystem chirarchies"/>
+<property name="mdpc.descrs"  value="Tools to analyze filesystem chirarchies"/>
 <property name="mdpc.arch"    value="all"/>
 <!-- recommends, because you can still use DirStat 1 without Postgres Lib -->
 <property name="mdpc.recommends" value="libpostgresql-jdbc-java"/>
@@ -19,7 +19,12 @@
 </property>
 
 <property name="mdpc.file.install">
-...
+dirstat1/dirstat1.jar /usr/share/java
+dirstat1/conf.xml /usr/share/mdvl-dirstat
+dirstat2/dirstat2.jar /usr/share/java
+dirstat2/lib/org-netbeans-swing-outline.jar /usr/share/java
+dirstat1/dirstat1 /usr/bin
+dirstat2/dirstat2 /usr/bin
 </property>
 
 <property name="mdpc.copyright.file"><![CDATA[
@@ -60,7 +65,7 @@ License: CDDL
  purpose with or without fee is hereby granted, provided that the above
  copyright notice and this permission notice appear in all copies.
 
-Files: dirstat1/* dirstat2_dev/* dirstat2/ma dirstat2/drop.sql dirstat2/build.xml README.md build.xml
+Files: debian/* dirstat1/* dirstat2_dev/* dirstat2/dirstat2 dirstat2/ma/* dirstat2/drop.sql dirstat2/build.xml README.md build.xml
 Copyright: Copyright (c) 2019 Ma_Sys.ma <Ma_Sys.ma@web.de>
 License: GPL-3+
 

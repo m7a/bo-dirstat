@@ -1,0 +1,4 @@
+#!/bin/sh -e
+# cd: required because Dir Stat 1 reads conf from PWD
+cd /usr/share/java/mdvl-dirstat
+exec java -jar /usr/share/java/dirstat1.jar "$@"

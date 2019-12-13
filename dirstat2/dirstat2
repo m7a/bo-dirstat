@@ -1,0 +1,2 @@
+#!/bin/sh -e
+exec java -cp /usr/share/java/postgresql.jar:/usr/share/java/org-netbeans-swing-outline.jar:/usr/share/java/dirstat2.jar ma.dirstat.Main "$@"

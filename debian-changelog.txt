@@ -1,0 +1,5 @@
+mdvl-dirstat (1.0.0) stable; urgency=medium
+
+  * Package created with MDPC 2
+
+ -- Linux-Fan, Ma_Sys.ma <Ma_Sys.ma@web.de>  Fri, 13 Dec 2019 14:23:29 +0100
