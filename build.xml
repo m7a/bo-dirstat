@@ -73,33 +73,15 @@ Files: dirstat2/lib/org-netbeans-swing-outline.jar
 License: CDDL
 ]]></property>
 
-<!-- PART OF TPL HERE FOR USE IN BUILD -->
-<property environment="env"/>
-<condition property="masysma.internal.includepath.rel" value="${env.MDVL_CI_PHOENIX_ROOT}" else=".."><isset property="env.MDVL_CI_PHOENIX_ROOT"/></condition>
-<property name="masysma.internal.includepath" location="${masysma.internal.includepath.rel}"/>
-
-<!-- SPECIFIC BUILD TODO THIS IS RECURSIVE ANT SHOULD BE SUPPORTED IN TEMPLATE! -->
-<target name="build">
-	<ant dir="dirstat1" target="jar"/>
-	<ant dir="dirstat2" target="jar"/>
-</target>
-
-<target name="clean">
-	<ant dir="dirstat1" target="clean"/>
-	<ant dir="dirstat2" target="clean"/>
-</target>
-
-<target name="dist-clean" depends="clean">
-	<ant dir="dirstat1" target="dist-clean"/>
-	<ant dir="dirstat2" target="dist-clean"/>
-</target>
-
 <!-- CI INTEGRATION -->
 <target name="package_triggered" depends="package">
 	<property name="masysma.ci.trigger" value="newver"/>
 </target>
 
-<!-- TPL IMPORT (PARTIALLY GIVEN ABOVE) -->
+<!-- CONSTANT TPL IMPORT -->
+<property environment="env"/>
+<condition property="masysma.internal.includepath.rel" value="${env.MDVL_CI_PHOENIX_ROOT}" else=".."><isset property="env.MDVL_CI_PHOENIX_ROOT"/></condition>
+<property name="masysma.internal.includepath" location="${masysma.internal.includepath.rel}"/>
 <property name="masysma.internal.loadpath" value="${masysma.internal.includepath}/co-build/ant-build-template.xml"/>
 <condition property="masysma.internal.load" value="file://${masysma.internal.loadpath}" else="https://raw.githubusercontent.com/m7a/co-build/master/ant-build-template.xml"><resourceexists><file file="${masysma.internal.loadpath}"/></resourceexists></condition>
 <import><url url="${masysma.internal.load}"/></import>
