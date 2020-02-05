@@ -8,6 +8,7 @@ author: ["Linux-Fan, Ma_Sys.ma (Ma_Sys.ma@web.de)"]
 keywords: ["dirstat2", "DirStat", "Dir", "Stat", "scan"]
 x-masysma-version: 2.0.0
 x-masysma-repository: https://www.github.com/m7a/bo-dirstat
+x-masysma-website: https://masysma.lima-city.de/32/dirstat.xhtml
 x-masysma-owned: 1
 x-masysma-copyright: |
   Copyright (c) 2014, 2019 Ma_Sys.ma.
